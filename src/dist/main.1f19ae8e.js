@@ -11288,44 +11288,76 @@ return jQuery;
 },{"process":"../../../../../AppData/Local/Yarn/Data/global/node_modules/process/browser.js"}],"app1.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 require("./app1.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $button1 = (0, _jquery.default)("#add1");
-var $button2 = (0, _jquery.default)("#minus1");
-var $button3 = (0, _jquery.default)("#mul2");
-var $button4 = (0, _jquery.default)("#divide2");
-var $number = (0, _jquery.default)("#number");
-var n = localStorage.getItem("n");
-$number.text(n || 100);
-$button1.on("click", function () {
-  var n = parseInt($number.text());
-  n += 1;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button2.on("click", function () {
-  var n = parseInt($number.text());
-  n -= 1;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button3.on("click", function () {
-  var n = parseInt($number.text());
-  n *= 2;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
-$button4.on("click", function () {
-  console.log(1);
-  var n = parseInt($number.text());
-  n /= 2;
-  localStorage.setItem("n", n);
-  $number.text(n);
-});
+var m = {
+  data: {
+    n: function n() {
+      return parseInt(localStorage.getItem("n")) || 100;
+    }
+  }
+};
+var v = {
+  init: function init(container) {
+    v.container = container;
+    v.render();
+    c.init();
+  },
+  html: "\n      <section id=\"app1\">\n        <div class=\"output\">\n          <span id=\"number\">{{number}}</span>\n        </div>\n        <div class=\"action\">\n          <button id='add1'>+1</button>\n          <button id='minus1'>-1</button>\n          <button id='mul2'>*2</button>\n          <button id='divide2'>\xF72</button>\n        </div>\n      </section>\n",
+  render: function render() {
+    (0, _jquery.default)(v.html.replace("{{number}}", m.data.n)).appendTo(v.container);
+  },
+  update: function update() {
+    c.ui.number.text(m.data.n || 100);
+  }
+};
+var c = {
+  init: function init() {
+    c.ui = {
+      number: v.container.children("#number")
+    };
+    c.bindEvents();
+  },
+  bindEvents: function bindEvents() {
+    v.container.on("click", "#add1", function () {
+      var n = m.data.n();
+      n += 1;
+      localStorage.setItem("n", n);
+      v.update();
+    });
+    v.container.on("click", "#minus1", function () {
+      var n = m.data.n();
+      n -= 1;
+      localStorage.setItem("n", n);
+      v.update();
+    });
+    v.container.on("click", "#mul2", function () {
+      var n = m.data.n();
+      n *= 2;
+      localStorage.setItem("n", n);
+      v.update();
+    });
+    v.container.on("click", "#divide2", function () {
+      console.log(1);
+      var n = m.data.n();
+      n /= 2;
+      localStorage.setItem("n", n);
+      v.update();
+    });
+  }
+}; //第一次渲染
+
+var _default = v;
+exports.default = _default;
 },{"./app1.css":"app1.css","jquery":"../node_modules/jquery/dist/jquery.js"}],"app2.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -11340,6 +11372,8 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = "\n <section id=\"app2\">\n        <ol class=\"tab-bar\">\n          <li>1</li>\n          <li>2</li>\n        </ol>\n        <ol class=\"tab-content\">\n          <li>content1</li>\n          <li>content2</li>\n        </ol>\n  </section>\n";
+var $element = (0, _jquery.default)(html).appendTo((0, _jquery.default)('body .page'));
 var $tabBar = (0, _jquery.default)('#app2 .tab-bar');
 var $tabContent = (0, _jquery.default)('#app2 .tab-content');
 $tabBar.on('click', 'li', function (e) {
@@ -11363,9 +11397,20 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = "\n      <section id=\"app3\">\n        <div class=\"square\"></div>\n      </section>\n";
+var $element = (0, _jquery.default)(html).appendTo((0, _jquery.default)('body .page'));
 var $square = (0, _jquery.default)('#app3 .square');
-$square.on('mouseover', function () {
-  $square.toggleClass('move');
+var localKey = 'app3-active';
+var active = localStorage.getItem(localKey) === "yes";
+$square.toggleClass("active", active);
+$square.on('click', function () {
+  if ($square.hasClass('active')) {
+    $square.removeClass('active');
+    localStorage.setItem(localKey, 'no');
+  } else {
+    $square.addClass('active');
+    localStorage.setItem(localKey, 'yes');
+  }
 });
 },{"./app3.css":"app3.css","jquery":"../node_modules/jquery/dist/jquery.js"}],"app4.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -11381,6 +11426,8 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = "\n      <section id=\"app4\">\n        <div class=\"circle\">\n          \n        </div>\n      </section>\n";
+var $element = (0, _jquery.default)(html).appendTo((0, _jquery.default)('body .page'));
 var $circle = (0, _jquery.default)('#app4 .circle');
 $circle.on('mouseenter', function () {
   $circle.addClass('active');
@@ -11394,14 +11441,20 @@ require("./reset");
 
 require("./global");
 
-require("./app1.js");
+var _app = _interopRequireDefault(require("./app1.js"));
 
 require("./app2.js");
 
 require("./app3.js");
 
 require("./app4.js");
-},{"./reset":"reset.css","./global":"global.css","./app1.js":"app1.js","./app2.js":"app2.js","./app3.js":"app3.js","./app4.js":"app4.js"}],"../../../../../AppData/Local/Yarn/Data/global/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+var _jquery = _interopRequireDefault(require("jquery"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_app.default.init((0, _jquery.default)("#app1"));
+},{"./reset":"reset.css","./global":"global.css","./app1.js":"app1.js","./app2.js":"app2.js","./app3.js":"app3.js","./app4.js":"app4.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"../../../../../AppData/Local/Yarn/Data/global/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -11429,7 +11482,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54559" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60073" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
